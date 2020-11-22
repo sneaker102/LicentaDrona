@@ -1,0 +1,26 @@
+GIT
+https://github.com/RovisLab/DroneController
+https://github.com/AtsushiSakai/PythonRobotics
+
+IMAGE PROCESSING
+file:///E:/DOWNLOADS/Real-timeimageprocessingalgorithmsforobjectanddistancesidentificationinmobilerobottrajectoryplanning.pdf
+file:///E:/DOWNLOADS/10.1007_s10846-013-9865-z.pdf
+https://avisingh599.github.io/vision/monocular-vo/
+http://www.cs.cmu.edu/~personalrover/PER/ResearchersPapers/CampbellSukthankarNourbakhshPahwa_VisualOdometryCR.pdf
+
+MATHEMATICAL DRONE MODEL
+https://towardsdatascience.com/demystifying-drone-dynamics-ee98b1ba882f
+https://arxiv.org/pdf/1704.06053.pdf
+https://www.kth.se/polopoly_fs/1.588039.1600688317!/Thesis%20KTH%20-%20Francesco%20Sabatino.pdf
+https://liu.diva-portal.org/smash/get/diva2:1129641/FULLTEXT01.pdf
+https://www.researchgate.net/publication/292176923_Mathematical_Modelling_of_Unmanned_Aerial_Vehicles_with_Four_Rotors?fbclid=IwAR0TiRI0eXYF3RlgiMTb8mUpmowhi6m8G4yPf-I-BBjNcqCkVUD-VVKVe7k
+https://scholar.rose-hulman.edu/cgi/viewcontent.cgi?article=1010&context=undergrad_research_pubs
+http://www.chrobotics.com/library/understanding-euler-angles
+https://www.wired.com/story/calculate-thrust-force-on-a-drone/ (force and torque)
+https://engineering.usu.edu/students/clubs/shpe/files/quadcopter-simulation.pdf (motors torques)
+http://www.dept.aoe.vt.edu/~cdhall/courses/aoe4140/intro2adcs.pdf (cool equations)
+https://www.ct.upt.ro/studenti/cursuri/ungureanu/Curs3_MC.pdf (cuplu si momente)
+http://ocw.snu.ac.kr/sites/default/files/NOTE/Chap07_Trajectory%20generation.pdf (polynominals)
+https://www.youtube.com/watch?v=lh-zYvZ3HMo (short video for the math model)
+http://www2.ece.ohio-state.edu/~zhang/RoboticsClass/docs/LN4_RigidBodyMotion.pdf (rigit body motions)
+https://sim.tuiasi.ro/wp-content/uploads/2018/05/SISTEME-DE-COORDONATE-OMOGENE.pdf (sisteme de coordonate omogene)
