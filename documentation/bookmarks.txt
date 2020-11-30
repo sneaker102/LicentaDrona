@@ -18,6 +18,8 @@ https://electricajournal.org/Content/files/sayilar/87/199-206.pdf
 https://towardsdatascience.com/demystifying-drone-dynamics-ee98b1ba882f
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7218882/?fbclid=IwAR2XdFdk5zDJm_XDESB1889U5zIGOxhQA2dYXb4NdKOeFp_-fpQraDJNdCE (frames)
 https://edepot.wur.nl/531531 (with vrep)
+http://www.mnrlab.com/uploads/7/3/8/3/73833313/trajectory.pdf
+http://www.ee.nmt.edu/~wedeward/EE570/SP09/gentraj.html
 https://digitalcommons.mtu.edu/cgi/viewcontent.cgi?article=1528&context=etdr&fbclid=IwAR34_KKb0Q8nMb9yVRzA69yEC9EBxKrB9Ptu19wVTg0zojUWLvTUj9oFCFQ (UAV full control)
 https://arxiv.org/pdf/1704.06053.pdf
 https://www.kth.se/polopoly_fs/1.588039.1600688317!/Thesis%20KTH%20-%20Francesco%20Sabatino.pdf
