@@ -3,13 +3,22 @@ https://github.com/RovisLab/DroneController
 https://github.com/AtsushiSakai/PythonRobotics
 
 IMAGE PROCESSING
+https://github.com/uoip/monoVO-python (visual_odometry)
+https://www.gregslabaugh.net/publications/euler.pdf (recover from Rotation euler angles)
+https://www.hindawi.com/journals/misy/2016/8937176/
+http://folk.ntnu.no/skoge/prost/proceedings/acc11/data/papers/0325.pdf?fbclid=IwAR34_KKb0Q8nMb9yVRzA69yEC9EBxKrB9Ptu19wVTg0zojUWLvTUj9oFCFQ
 file:///E:/DOWNLOADS/Real-timeimageprocessingalgorithmsforobjectanddistancesidentificationinmobilerobottrajectoryplanning.pdf
 file:///E:/DOWNLOADS/10.1007_s10846-013-9865-z.pdf
 https://avisingh599.github.io/vision/monocular-vo/
 http://www.cs.cmu.edu/~personalrover/PER/ResearchersPapers/CampbellSukthankarNourbakhshPahwa_VisualOdometryCR.pdf
 
 MATHEMATICAL DRONE MODEL
+https://apps.dtic.mil/sti/pdfs/ADA526540.pdf?fbclid=IwAR2XdFdk5zDJm_XDESB1889U5zIGOxhQA2dYXb4NdKOeFp_-fpQraDJNdCE (proiect complet)
+https://electricajournal.org/Content/files/sayilar/87/199-206.pdf
 https://towardsdatascience.com/demystifying-drone-dynamics-ee98b1ba882f
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7218882/?fbclid=IwAR2XdFdk5zDJm_XDESB1889U5zIGOxhQA2dYXb4NdKOeFp_-fpQraDJNdCE (frames)
+https://edepot.wur.nl/531531 (with vrep)
+https://digitalcommons.mtu.edu/cgi/viewcontent.cgi?article=1528&context=etdr&fbclid=IwAR34_KKb0Q8nMb9yVRzA69yEC9EBxKrB9Ptu19wVTg0zojUWLvTUj9oFCFQ (UAV full control)
 https://arxiv.org/pdf/1704.06053.pdf
 https://www.kth.se/polopoly_fs/1.588039.1600688317!/Thesis%20KTH%20-%20Francesco%20Sabatino.pdf
 https://liu.diva-portal.org/smash/get/diva2:1129641/FULLTEXT01.pdf
