@@ -1,6 +1,8 @@
 #include "ardrone/ardrone.h"
 #include <math.h> 
 #include <vector>
+#include "../../cvdrone-master/build/vs2015/PID.h"
+#include <random>
 
 // Fallback, in case M_PI doesn't exist.
 #ifndef M_PI
@@ -38,6 +40,7 @@ void setTrajectory(vector<float> (&traj)[3], Mat quinticCoeffs, float t) {
 	traj[1].push_back(quinticCoeffs.at<float>(1) + 2 * quinticCoeffs.at<float>(2)*t + 3 * quinticCoeffs.at<float>(3)*pow(t, 2) + 4 * quinticCoeffs.at<float>(4)*pow(t, 3) + 5 * quinticCoeffs.at<float>(5)*pow(t, 4));
 	traj[2].push_back(2 * quinticCoeffs.at<float>(2) + 6 * quinticCoeffs.at<float>(3)*t + 12 * quinticCoeffs.at<float>(4)*pow(t, 2) + 20 * quinticCoeffs.at<float>(5)*pow(t, 3));
 }
+
 void plot(Mat plotImg, String windowName, float x, float y, float z = 0) {
 
 	char text[100];
@@ -52,6 +55,67 @@ void plot(Mat plotImg, String windowName, float x, float y, float z = 0) {
 	imshow(windowName, plotImg);
 	waitKey(100);
 }
+
+Mat constructRotMatrix(float roll, float pitch, float yaw, bool inv = false) {
+	float rotData[3][3] = {
+	{cos(yaw) * cos(pitch), cos(yaw) * sin(pitch) * sin(roll) - sin(yaw) * cos(roll), cos(yaw) * sin(pitch) * cos(roll) + sin(yaw) * sin(roll)},
+	{sin(yaw) * cos(pitch), sin(yaw) * sin(pitch) * sin(roll) + cos(yaw) * cos(roll), sin(yaw) * sin(pitch) * cos(roll) - cos(yaw) * sin(roll)},
+	{-sin(pitch), -cos(pitch) * sin(roll), cos(pitch) * cos(roll)}
+	};
+	Mat rotMatrix(3, 3, CV_32F, rotData);
+	if (inv) {
+		return rotMatrix.inv();
+	}
+	return rotMatrix;
+}
+
+Mat getBodyLinearVel(Vec3f inertialLinearVel, float roll, float pitch, float yaw) {
+	Mat rotMatrixInv = constructRotMatrix(roll, pitch, yaw, true);
+	return rotMatrixInv * Mat(inertialLinearVel);
+}
+
+Mat getInertialLinearVel(Vec3f bodyLinearVel, float roll, float pitch, float yaw) {
+	Mat rotMatrix = constructRotMatrix(roll, pitch, yaw);
+	return rotMatrix * Mat(bodyLinearVel);
+}
+
+Mat getBodyAngularVel(Vec3f inertialAngularVel, float roll, float pitch) {
+	float transformData[3][3] = {
+		{1.f, 0.f, -sin(pitch)},
+		{0.f, cos(roll), cos(pitch) * sin(roll)},
+		{0.f, -sin(roll), cos(pitch) * cos(roll)}
+	};
+	Mat transformMatrix(3, 3, CV_32F, transformData);
+	return transformMatrix * Mat(inertialAngularVel);
+}
+
+Mat getInertialAngularVel(Vec3f bodyAngularVel, float roll, float pitch) {
+	float transformData[3][3] = {
+		{1.f, sin(roll)*tan(pitch), cos(roll)*tan(pitch)},
+		{0.f, cos(roll), -sin(roll)},
+		{0.f, sin(roll)/cos(pitch), cos(roll)/cos(pitch)}
+	};
+	Mat transformMatrix(3, 3, CV_32F, transformData);
+	return transformMatrix * Mat(bodyAngularVel);
+}
+
+Mat getAppliedForces(Mat bodyAngularVel, Mat bodyLinearVel) {
+	float m = 0.06; //kg
+	return m * (bodyAngularVel.cross(bodyLinearVel) + bodyLinearVel);
+}
+
+Mat getAppliedTorques(Mat bodyAngularVel) {
+	// m^2/kg
+	float inertiaData[3][3] = {
+		{0.00006667f, 0.f, 0.f},
+		{0.f, 0.007533f, 0.f},
+		{0.f, 0.f, 0.007533f}
+	};
+	Mat inertiaMatrix(3, 3, CV_32F, inertiaData);
+	Mat inerAngularProd = inertiaMatrix * bodyAngularVel;
+	return inerAngularProd + bodyAngularVel.cross(inerAngularProd);
+}
+
 int main(int argc, char *argv[])
 {
 	// x,y,z,roll,pitch,yaw
@@ -74,13 +138,15 @@ int main(int argc, char *argv[])
 	vector<float> roll[3];
 	vector<float> pitch[3];
 	vector<float> yaw[3];
-	vector<Point> points;
 	//namedWindow("Trajectory", WINDOW_AUTOSIZE);
 	//Mat plotImg = Mat::zeros(800, 800, CV_8UC3);
 	//namedWindow("Velocities", WINDOW_AUTOSIZE);
 	//Mat plotVel = Mat::zeros(800, 800, CV_8UC3);
-	//namedWindow("Accelerations", WINDOW_AUTOSIZE);
-	//Mat plotAcc = Mat::zeros(800, 800, CV_8UC3);
+	//namedWindow("VelocitiesPID", WINDOW_AUTOSIZE);
+	//Mat plotVelPID = Mat::zeros(800, 800, CV_8UC3);
+	//PID PIDs[4] = { PID(1.f,0.f,1.f),PID(1.f,0.f,1.f),PID(1.f,0.f,1.f),PID(1.f,0.f,1.f) };
+	//default_random_engine generator;
+	//uniform_real_distribution<double> distribution(0.1, 1.3);
 	for (float t = 0.f; t <= t_f; t += 0.1f) {
 		setTrajectory(x, xQuinticCoeffs, t);
 		setTrajectory(y, yQuinticCoeffs, t);
@@ -89,10 +155,23 @@ int main(int argc, char *argv[])
 		setTrajectory(pitch, pitchQuinticCoeffs, t);
 		setTrajectory(yaw, yawQuinticCoeffs, t);
 		//plot(plotImg, "Trajectory", x[0].at(x[0].size() - 1), -y[0].at(y[0].size() - 1), z[0].at(z[0].size() - 1));
-		//plot(plotVel, "Velocities",t*5, -y[1].at(y[1].size() - 1));
-		//plot(plotAcc, "Accelerations", t * 5, -y[2].at(y[2].size() - 1));
+		//plot(plotVel, "Velocities",t*5, -x[1].at(x[1].size() - 1));
+		//float pidVal = PIDs[0].compute(-x[1].at(x[1].size() - 1), -x[1].at(x[1].size() - 1) * distribution(generator), 0.1);
+		//plot(plotVelPID, "VelocitiesPID", t * 5, pidVal);
+		
+	
 	}
-
 	//waitKey();
+
+	// todo interface with v-rep to get roll, pitch, yaw
+	Mat linearVel, angularVel, bodyForces, bodyTorques;
+	for (int i = 0; i < x[1].size(); i++) {
+		linearVel = getBodyLinearVel(Vec3f(x[1].at(i), y[1].at(i), z[1].at(i)), 0, 0, 0);
+		angularVel = getBodyAngularVel(Vec3f(roll[1].at(i), pitch[1].at(i), yaw[1].at(i)), 0, 0);
+		bodyForces = getAppliedForces(angularVel, linearVel);
+		bodyTorques = getAppliedTorques(angularVel);
+	}
+	
+	
     return 0;
 }
