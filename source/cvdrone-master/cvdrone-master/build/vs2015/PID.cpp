@@ -1,5 +1,13 @@
 #include "PID.h"
 
+PID::PID() {
+	mKp = 0;
+	mKi = 0;
+	mKd = 0;
+	mIntegratedErr = 0;
+	mLastErr = 0;
+}
+
 PID::PID(float kP, float kI, float kD) {
 	mKp = kP;
 	mKi = kI;
